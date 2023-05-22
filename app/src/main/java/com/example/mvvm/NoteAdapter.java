@@ -28,14 +28,19 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.MyViewHoder> {
     // tạo đối tượng view
     public MyViewHoder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-        if (viewType ==0){
+        if (viewType == 0){
             view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_note , parent,false);
         }else {
             view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_le , parent,false);
         }
-//        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_note ,parent,false);
         return new MyViewHoder(view);
 
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        // Xác định loại item (0 cho chẵn, 1 cho lẻ)
+        return position % 2;
     }
 
     @Override
@@ -56,6 +61,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.MyViewHoder> {
         return noteData.size();
     }
 
+    public ArrayList<Note> getItemList() {
+        return noteData;
+    }
+
 
     class MyViewHoder extends RecyclerView.ViewHolder{
         LinearLayout layout;
@@ -73,11 +82,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.MyViewHoder> {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                         listener.delete(note);
                         notifyDataSetChanged();
-
-//
                 }
             });
         }

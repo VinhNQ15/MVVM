@@ -21,12 +21,6 @@ public class MainActivity extends AppCompatActivity implements OnitemclickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        anhxa();
-
-    }
-
-
-    private void anhxa() {
         recyclerView = findViewById(R.id.recycler_view);
         Button button= findViewById(R.id.add_item);
         noteData = new ArrayList<>();
@@ -38,6 +32,22 @@ public class MainActivity extends AppCompatActivity implements OnitemclickListen
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);//khoi tao
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(noteAdapter);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<Note> itemList = noteAdapter.getItemList();
+
+// Tạo một item mới
+                Note newItem = new Note("Note Add", "This is description ");
+
+// Thêm item mới vào danh sách dữ liệu
+                itemList.add(newItem);
+
+// Thông báo cho Adapter biết rằng có sự thay đổi trong dữ liệu
+                noteAdapter.notifyItemInserted(itemList.size() - 1);
+            }
+        });
     }
 
     @Override
