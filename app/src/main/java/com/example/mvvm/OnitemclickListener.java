@@ -1,4 +1,4 @@
-package com.example.recyclerviewexample;
+package com.example.mvvm;
 
 public interface OnitemclickListener {
     void onItemClick(Note note);

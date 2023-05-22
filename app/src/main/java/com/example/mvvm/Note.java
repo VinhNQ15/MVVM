@@ -1,4 +1,4 @@
-package com.example.recyclerviewexample;
+package com.example.mvvm;
 
 import androidx.annotation.NonNull;
 
