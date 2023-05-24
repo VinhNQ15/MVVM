@@ -1,114 +1,79 @@
 package com.example.mvvm;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.DialogInterface;
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import java.util.ArrayList;
+public class MainActivity extends AppCompatActivity  {
 
-public class MainActivity extends AppCompatActivity implements OnitemclickListener {
-    RecyclerView recyclerView;// hiển thị danh sách note lên
-    NoteAdapter noteAdapter; //1
-
-    ArrayList<Note> noteData;//  danh sách các note
-
+    private boolean doubleClick = false;
+    private EditText edtemail, edtpass;
+    private TextView txtmesss ,txtpass;
+    private Button btnlog;
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        recyclerView = findViewById(R.id.recycler_view);
-        Button button= findViewById(R.id.add_item);
-        noteData = new ArrayList<>();
-        for (int i = 0; i < 30; i++) {
-            noteData.add(new Note("Note" + i, "This is description " + i));
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        edtemail = findViewById(R.id.edt_username);
+        edtpass = findViewById(R.id.edt_pass);
+        txtmesss = findViewById(R.id.text_Email);
+        txtpass = findViewById(R.id.text_pass);
+        btnlog = findViewById(R.id.btnlogin);
+        btnlog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickLogin();
+            }
+        });
+    }
+
+    private void clickLogin() {
+        String strEmail= edtemail.getText().toString().trim();
+        String strPass= edtpass.getText().toString().trim();
+        if (strEmail.equals("thanhcong2kcs@gmail.com") && strPass.equals("123456789")) {
+            Toast.makeText(MainActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(MainActivity.this, Home.class));
 
         }
-        noteAdapter = new NoteAdapter(noteData, this);//1
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);//khoi tao
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(noteAdapter);
+        if (strEmail.isEmpty() ){
+            txtmesss.setVisibility(View.VISIBLE);
+            txtmesss.setText("Email can`t be blank");
+            txtmesss.setTextColor(getResources().getColor(R.color.red));
+//            Toast.makeText(MainActivity.this, "Emai trống", Toast.LENGTH_SHORT).show();
+        }
+        if (strPass.isEmpty() ){
+            txtpass.setVisibility(View.VISIBLE);
+            txtpass.setText("Password can`t be blank");
+            txtpass.setTextColor(getResources().getColor(R.color.red));
+////            Toast.makeText(MainActivity.this, "Password trống ", Toast.LENGTH_SHORT).show();
+        }
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ArrayList<Note> itemList = noteAdapter.getItemList();
 
-// Tạo một item mới
-                Note newItem = new Note("Note Add", "This is description ");
-
-// Thêm item mới vào danh sách dữ liệu
-                itemList.add(newItem);
-
-// Thông báo cho Adapter biết rằng có sự thay đổi trong dữ liệu
-                noteAdapter.notifyItemInserted(itemList.size() - 1);
-            }
-        });
     }
-
     @Override
-    public void onItemClick(Note note) {
-//        showToast("you click" +note.getTitle());
-    }
-
-    @Override
-    public void insert(Note note) {
-        Button button= findViewById(R.id.add_item);
-        button.setOnClickListener(new View.OnClickListener() {
+    public void onBackPressed() {
+        if (doubleClick)
+            finish();
+        Toast.makeText(this, "Click 2 lần liên tiếp để thoát ứng dụng", Toast.LENGTH_SHORT).show();
+        doubleClick = true;
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void onClick(View v) {
-                AlertDialog.Builder alertdialog = new AlertDialog.Builder(MainActivity.this);
-                alertdialog.setTitle("thông báo");
-                alertdialog.setIcon(R.drawable.ic_launcher_background);
-                alertdialog.setMessage("bạn muốn thêm items không");
-                alertdialog.setPositiveButton("có", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        noteData.add(note);
-                        noteAdapter.notifyDataSetChanged();
-                    }
-                });
-                alertdialog.setNegativeButton("không", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-                alertdialog.show();
+            public void run() {
+                doubleClick = false;
             }
-        });
-
+        }, 2000);
     }
-
-    @Override
-    public void delete(Note note) {
-        AlertDialog.Builder alertdialog = new AlertDialog.Builder(MainActivity.this);
-        alertdialog.setTitle("thông báo");
-        alertdialog.setIcon(R.drawable.ic_launcher_background);
-        alertdialog.setMessage("bạn muốn xóa items không");
-        alertdialog.setPositiveButton("có", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                noteData.remove(note);
-                noteAdapter.notifyDataSetChanged();
-            }
-        });
-        alertdialog.setNegativeButton("không", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-        alertdialog.show();
-//        noteData.remove(note);
-//        noteAdapter.notifyItemRemoved(noteData);
-    }
-
-
-
-
 }
+
+
