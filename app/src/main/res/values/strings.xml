@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">MVVM</string>
     <string name="tieude">Login From</string>
+    <string name="login">Login</string>
     <string name="Password">Password</string>
     <string name="EmailAdsress">EmailAdsress</string>
 </resources>
