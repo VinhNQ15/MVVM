@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity  {
         String strEmail= edtemail.getText().toString().trim();
         String strPass= edtpass.getText().toString().trim();
         if (strEmail.equals("thanhcong2kcs@gmail.com") && strPass.equals("123456789")) {
-            Toast.makeText(MainActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "Đăng nhập thành công  ", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(MainActivity.this, Home.class));
 
         }
